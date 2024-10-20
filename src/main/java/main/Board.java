@@ -51,6 +51,7 @@ public class Board extends JPanel {
 
     /**
      * Inicializa el tablero y comienza la partida
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     public Board() {
 
@@ -59,7 +60,7 @@ public class Board extends JPanel {
     }
     /**
      * Inicializa un nuevo tablero con las dimensiones predefinidas, le asigna un fondo de color negro, inicializa el contador de juego e inicia la partida.
-     *
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void initBoard() {
 
@@ -97,7 +98,8 @@ public class Board extends JPanel {
     /**
      * Genera gráficamente los aliens en la interfaz en las posiciones indicadas.
      * Si el alien es disparado, ejecuta la acción correspondiente (explota y desaparece de la pantalla)
-     * */
+     * NO ES NECESARIO PROBAR EL MÉTODO MEDIANTE PRUEBAS UNITARIAS
+     *  */
     private void drawAliens(Graphics g) {
 
         for (Alien alien : this.aliens) {
@@ -116,6 +118,7 @@ public class Board extends JPanel {
     /**
      * Genera gráficamente el jugador en la interfaz en las posiciones indicadas.
      * Si el jugador es disparado, el jugador muere y termina
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void drawPlayer(Graphics g) {
 
@@ -132,6 +135,7 @@ public class Board extends JPanel {
     }
     /**
      * Genera gráficamente los disparos en las posiciones indicadas
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void drawShot(Graphics g) {
 
@@ -142,6 +146,7 @@ public class Board extends JPanel {
     }
     /**
      * Genera gráficamente las explosiones de aliens
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void drawBombing(Graphics g) {
 
@@ -157,6 +162,7 @@ public class Board extends JPanel {
     }
     /**
      * Actualiza los componentes de la interfaz después de que se ejecute una acción
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     @Override
     public void paintComponent(Graphics g) {
@@ -166,6 +172,7 @@ public class Board extends JPanel {
     }
     /**
      * Genera y coloca todos los elementos en la interfaz gráfica.
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void doDrawing(Graphics g) {
 
@@ -196,6 +203,7 @@ public class Board extends JPanel {
     }
     /**
      * Genera en la interfaz un mensaje indicando que se ha perdido la partida :(
+     * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void gameOver(Graphics g) {
 
@@ -218,12 +226,11 @@ public class Board extends JPanel {
     /**
      * Actualiza el estado del juego de acuerdo a las teclas pulsadas.
      * Si se han destruido todos los alienígenas, el juego finaliza la partida.
-     * Si no se han destruido, actualiza visualmente las posiciones y el estado del juego.
+     * Si no se han destruido, actualiza el estado del juego.
      * */
     private void update() {
 
-        if (deaths == Commons.NUMBER_OF_ALIENS_TO_DESTROY) {
-
+        if (deaths == Commons.CHANCE) {
             inGame = false;
             timer.stop();
             message = "Game won!";
@@ -431,5 +438,73 @@ public class Board extends JPanel {
                 }
             }
         }
+    }
+
+    public Dimension getD() {
+        return d;
+    }
+
+    public void setD(Dimension d) {
+        this.d = d;
+    }
+
+    public void setAliens(List<Alien> aliens) {
+        this.aliens = aliens;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setShot(Shot shot) {
+        this.shot = shot;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
+    public String getExplImg() {
+        return explImg;
+    }
+
+    public void setExplImg(String explImg) {
+        this.explImg = explImg;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
     }
 }
