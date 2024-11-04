@@ -189,7 +189,7 @@ public class BoardTest {
     @Test
     public void testAlienJustAboveBottomBorder() {
         board.setDirection(1); // Dirección arbitraria
-        aliens.add(new Alien(50, Commons.GROUND + Commons.ALIEN_HEIGHT - 1));  // Alien justo por encima del límite inferior
+        aliens.add(new Alien(50, Commons.GROUND - Commons.ALIEN_HEIGHT - 1));  // Alien justo por encima del límite inferior
 
         board.update_aliens();
 
@@ -201,7 +201,7 @@ public class BoardTest {
     @Test
     public void testAlienAtBottomBorder() {
         board.setDirection(1); // Dirección arbitraria
-        aliens.add(new Alien(50, Commons.GROUND + Commons.ALIEN_HEIGHT));  // Alien en el límite inferior
+        aliens.add(new Alien(50, Commons.GROUND - Commons.ALIEN_HEIGHT));  // Alien en el límite inferior
 
         board.update_aliens();
 
@@ -213,7 +213,7 @@ public class BoardTest {
     @Test
     public void testAlienBelowBottomBorder() {
         board.setDirection(1); // Dirección arbitraria
-        aliens.add(new Alien(50, Commons.GROUND + Commons.ALIEN_HEIGHT + 1));  // Alien por debajo del límite inferior
+        aliens.add(new Alien(50, Commons.GROUND - Commons.ALIEN_HEIGHT + 1));  // Alien por debajo del límite inferior
 
         board.update_aliens();
 
