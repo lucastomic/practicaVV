@@ -364,4 +364,77 @@ public class BoardTest {
         assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
 
     }
+
+
+    // VE-1: Disparo y alien visibles, hay colisión
+    @Test
+    public void testImpact_VisibleShotVisibleAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(55);
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // VE-2: Disparo y alien visibles, no hay colisión
+    @Test
+    public void testNoImpact_VisibleShotVisibleAlien() {
+        board.getShot().setX(20);
+        board.getShot().setY(20);
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+    }
+
+    // VE-3: Disparo visible, alien no visible, hay colisión (en la misma posición)
+    @Test
+    public void testImpact_VisibleShotInvisibleAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(55);
+
+        Alien alien = new Alien(50, 50);
+        alien.die();
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+    }
+
+    // VE-4: Disparo visible, alien no visible, no hay colisión
+    @Test
+    public void testNoImpact_VisibleShotInvisibleAlienNoCollision() {
+        board.getShot().setX(20);
+        board.getShot().setY(20);
+
+        Alien alien = new Alien(50, 50);
+        alien.die();
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+    }
+    // VE-5: Disparo no visible, alien no visible, hay colisión
+    @Test
+    public void testImpact_InvisibleShotVisibleAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(55);
+        board.getShot().die();
+
+        Alien alien = new Alien(50, 50);
+        alien.die();
+        aliens.add(alien);
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería seguir inactivo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+    }
 }
