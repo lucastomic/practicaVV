@@ -21,6 +21,7 @@ public class BoardTest {
         board = new Board();
         aliens = new ArrayList<>();
         board.setAliens(aliens); // Asignamos la lista de aliens a la board para los tests de update_aliens
+        board.setShot(new Shot());
     }
 
     // Tests de inicialización (gameInit)
@@ -219,5 +220,148 @@ public class BoardTest {
 
         assertFalse(board.isInGame(), "El juego debería terminar ya que el alien ha sobrepasado el límite inferior");
         assertEquals("Invasion!", board.getMessage(), "El mensaje debería ser 'Invasion!'");
+    }
+
+
+    // CE-1: shotX < alienX & shotY < alienY
+    @Test
+    public void testNoImpact_ShotAboveLeft() {
+        board.getShot().setX(20);
+        board.getShot().setY(20);
+
+        Alien alien = new Alien(50, 50); // Alien está abajo a la derecha del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+    }
+
+    // CE-2: alienX < shotX < alienX + ALIEN_WIDTH & shotY < alienY
+    @Test
+    public void testNoImpact_ShotAboveAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(20);
+
+        Alien alien = new Alien(50, 50); // Alien debajo del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+
+    // CE-3: alienX + ALIEN_WIDTH < shotX & shotY < alienY
+    @Test
+    public void testNoImpact_ShotAboveRightAlien() {
+        board.getShot().setX(90);
+        board.getShot().setY(20);
+
+        Alien alien = new Alien(50, 50); // Alien está a la izquierda y debajo del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+
+    // CE-4: shotX < alienX & alienY < shotY < alienY + ALIEN_HEIGHT
+    @Test
+    public void testNoImpact_ShotLeftAlien() {
+        board.getShot().setX(20);
+        board.getShot().setY(55);
+
+        Alien alien = new Alien(50, 50); // Alien está a la derecha del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+
+
+    // CE-5: alienX < shotX < alienX + ALIEN_WIDTH & alienY < shotY < alienY + ALIEN_HEIGHT
+    @Test
+    public void testImpact_ShotInsideAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(55);
+
+        Alien alien = new Alien(50, 50); // Alien está en el área del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+        assertEquals(board.getDeaths(),1, "Las muertes deberian subir a 1");
+
+    }
+    // CE-6: alienX + ALIEN_WIDTH < shotX & alienY < shotY < alienY + ALIEN_HEIGHT
+    @Test
+    public void testNoImpact_ShotRightAlien() {
+        board.getShot().setX(90);
+        board.getShot().setY(55);
+
+        Alien alien = new Alien(50, 50); // Alien está a la izquierda del disparo en el área vertical
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+
+    // CE-7: shotX < alienX & alienY + ALIEN_HEIGHT < shotY
+    @Test
+    public void testNoImpact_ShotBelowLeftAlien() {
+        board.getShot().setX(20);
+        board.getShot().setY(90);
+
+        Alien alien = new Alien(50, 50); // Alien está arriba y a la derecha del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+
+    // CE-8: alienX < shotX < alienX + ALIEN_WIDTH & alienY + ALIEN_HEIGHT < shotY
+    @Test
+    public void testNoImpact_ShotBelowAlien() {
+        board.getShot().setX(55);
+        board.getShot().setY(90);
+
+        Alien alien = new Alien(50, 50); // Alien está arriba del disparo en el área horizontal
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
+    }
+    // CE-9: alienX + ALIEN_WIDTH < shotX & alienY + ALIEN_HEIGHT < shotY
+    @Test
+    public void testNoImpact_ShotBelowRight() {
+        board.getShot().setX(90);
+        board.getShot().setY(90);
+
+        Alien alien = new Alien(50, 50); // Alien está arriba a la izquierda del disparo
+        aliens.add(alien);
+
+        board.update_shots();
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+
     }
 }
