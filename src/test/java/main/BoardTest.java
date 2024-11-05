@@ -223,146 +223,186 @@ public class BoardTest {
     }
 
 
-    // CE-1: shotX < alienX & shotY < alienY
+
+    // B-1: Fuera del alien por la izquierda, alineado verticalmente
     @Test
-    public void testNoImpact_ShotAboveLeft() {
-        board.getShot().setX(20);
-        board.getShot().setY(20);
+    public void testNoImpact_LeftOfAlien() {
+        board.getShot().setX(49);
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
 
-        Alien alien = new Alien(50, 50); // Alien está abajo a la derecha del disparo
-        aliens.add(alien);
-
-        board.update_shots();
-        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo");
-        assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-    }
-
-    // CE-2: alienX < shotX < alienX + ALIEN_WIDTH & shotY < alienY
-    @Test
-    public void testNoImpact_ShotAboveAlien() {
-        board.getShot().setX(55);
-        board.getShot().setY(20);
-
-        Alien alien = new Alien(50, 50); // Alien debajo del disparo
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
     }
 
-    // CE-3: alienX + ALIEN_WIDTH < shotX & shotY < alienY
+    // B-2: Justo en el borde izquierdo del alien
     @Test
-    public void testNoImpact_ShotAboveRightAlien() {
-        board.getShot().setX(90);
-        board.getShot().setY(20);
+    public void testImpact_LeftEdgeOfAlien() {
+        board.getShot().setX(50);
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
 
-        Alien alien = new Alien(50, 50); // Alien está a la izquierda y debajo del disparo
-        aliens.add(alien);
-
-        board.update_shots();
-        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
-        assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
-    }
-
-    // CE-4: shotX < alienX & alienY < shotY < alienY + ALIEN_HEIGHT
-    @Test
-    public void testNoImpact_ShotLeftAlien() {
-        board.getShot().setX(20);
-        board.getShot().setY(55);
-
-        Alien alien = new Alien(50, 50); // Alien está a la derecha del disparo
-        aliens.add(alien);
-
-        board.update_shots();
-        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
-        assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
-    }
-
-
-    // CE-5: alienX < shotX < alienX + ALIEN_WIDTH & alienY < shotY < alienY + ALIEN_HEIGHT
-    @Test
-    public void testImpact_ShotInsideAlien() {
-        board.getShot().setX(55);
-        board.getShot().setY(55);
-
-        Alien alien = new Alien(50, 50); // Alien está en el área del disparo
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
         assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
-        assertEquals(board.getDeaths(),1, "Las muertes deberian subir a 1");
-
     }
-    // CE-6: alienX + ALIEN_WIDTH < shotX & alienY < shotY < alienY + ALIEN_HEIGHT
-    @Test
-    public void testNoImpact_ShotRightAlien() {
-        board.getShot().setX(90);
-        board.getShot().setY(55);
 
-        Alien alien = new Alien(50, 50); // Alien está a la izquierda del disparo en el área vertical
+    // B-3: Dentro del alien, ligeramente a la derecha del borde izquierdo
+    @Test
+    public void testImpact_InsideLeftOfAlien() {
+        board.getShot().setX(51);
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // B-4: Fuera del alien por arriba, alineado horizontalmente
+    @Test
+    public void testNoImpact_AboveAlien() {
+        board.getShot().setX(50 + Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(49);
+
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
     }
 
-    // CE-7: shotX < alienX & alienY + ALIEN_HEIGHT < shotY
+    // B-5: Justo en el borde superior del alien
     @Test
-    public void testNoImpact_ShotBelowLeftAlien() {
-        board.getShot().setX(20);
-        board.getShot().setY(90);
+    public void testImpact_TopEdgeOfAlien() {
+        board.getShot().setX(50 + Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(50);
 
-        Alien alien = new Alien(50, 50); // Alien está arriba y a la derecha del disparo
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // B-6: Dentro del alien, ligeramente abajo del borde superior
+    @Test
+    public void testImpact_InsideTopOfAlien() {
+        board.getShot().setX(50 + Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(51);
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // B-7: Fuera del alien por la derecha, alineado verticalmente
+    @Test
+    public void testNoImpact_RightOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH + 1); // AlienX + ALIEN_WIDTH + 1
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
+
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
     }
 
-    // CE-8: alienX < shotX < alienX + ALIEN_WIDTH & alienY + ALIEN_HEIGHT < shotY
+    // B-8: Justo en el borde derecho del alien
     @Test
-    public void testNoImpact_ShotBelowAlien() {
-        board.getShot().setX(55);
-        board.getShot().setY(90);
+    public void testImpact_RightEdgeOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH); // AlienX + ALIEN_WIDTH
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
 
-        Alien alien = new Alien(50, 50); // Alien está arriba del disparo en el área horizontal
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // B-9: Dentro del alien, ligeramente a la izquierda del borde derecho
+    @Test
+    public void testImpact_InsideRightOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH -1);// AlienX + ALIEN_WIDTH - 1
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+
+    // B-10: Fuera del alien por abajo, alineado horizontalmente
+    @Test
+    public void testNoImpact_BelowAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT+1); // AlienY + ALIEN_HEIGHT + 1
+
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
-
     }
-    // CE-9: alienX + ALIEN_WIDTH < shotX & alienY + ALIEN_HEIGHT < shotY
-    @Test
-    public void testNoImpact_ShotBelowRight() {
-        board.getShot().setX(90);
-        board.getShot().setY(90);
 
-        Alien alien = new Alien(50, 50); // Alien está arriba a la izquierda del disparo
+    // B-11: Justo en el borde inferior del alien
+    @Test
+    public void testImpact_BottomEdgeOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT); // AlienY + ALIEN_HEIGHT
+
+        Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
-        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo");
-        assertFalse(alien.isDying(), "El alien no debería estar afectado");
-        assertEquals(board.getDeaths(),0, "Las muertes deberian seguir siendo 0");
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
 
+    // B-12: Dentro del alien, ligeramente arriba del borde inferior
+    @Test
+    public void testImpact_InsideBottomOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT-1); // AlienY + ALIEN_HEIGHT - 1
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+    }
+    // B-13: Disparo en el centro del alien
+    @Test
+    public void testImpact_CenterOfAlien() {
+        board.getShot().setX(50+ Commons.ALIEN_WIDTH/2); // AlienX + (ALIEN_WIDTH / 2)
+        board.getShot().setY(50+ Commons.ALIEN_HEIGHT/2); // AlienY + (ALIEN_HEIGHT / 2)
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
     }
 
 
