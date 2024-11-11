@@ -477,4 +477,24 @@ public class BoardTest {
         assertFalse(board.getShot().isVisible(), "El disparo debería seguir inactivo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
     }
+
+    // CE-1: `deaths` igual a `Commons.CHANCE`, el juego debería terminar
+    @Test
+    public void testGameWonWhenDeathsEqualsChance() {
+        board.setDeaths(Commons.CHANCE); // Configura deaths igual a CHANCE
+
+        board.update();
+
+        assertFalse(board.isInGame(), "El juego debería terminar cuando deaths es igual a Commons.CHANCE.");
+    }
+
+    // CE-2: `deaths` menor que `Commons.CHANCE`, el juego debería continuar
+    @Test
+    public void testGameContinuesWhenDeathsLessThanChance() {
+        board.setDeaths(Commons.CHANCE - 1); // Configura deaths menor que CHANCE
+
+        board.update();
+
+        assertTrue(board.isInGame(), "El juego debería continuar cuando deaths es menor que Commons.CHANCE.");
+    }
 }
