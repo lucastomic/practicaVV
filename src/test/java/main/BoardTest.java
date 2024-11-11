@@ -497,4 +497,138 @@ public class BoardTest {
 
         assertTrue(board.isInGame(), "El juego debería continuar cuando deaths es menor que Commons.CHANCE.");
     }
+
+    // PT-1: Disparo no visible, sin modificaciones
+    @Test
+    public void testShotNotVisible_NoChanges() {
+        board.getShot().die(); // Disparo no visible
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo no debería estar visible.");
+        assertTrue(alien.isVisible(), "El alien no debería ser afectado.");
+    }
+
+    // PT-2: Disparo visible, sin aliens, disparo disminuye en Y
+    @Test
+    public void testShotVisible_NoAliens_YDecreases() {
+        board.getShot().setX(50);
+        board.getShot().setY(50);
+
+        board.update_shots();
+
+        assertEquals(46, board.getShot().getY(), "El disparo debería moverse hacia arriba.");
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir visible.");
+    }
+
+    // PT-3: Disparo impacta en un alien, alien "muriendo", disparo inactivo, deaths disminuye
+    @Test
+    public void testShotHitsAlien() {
+        board.getShot().setX(50);
+        board.getShot().setY(50);
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo tras el impacto.");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'.");
+        assertEquals(0, board.getDeaths(), "El contador de muertes debería disminuir.");
+    }
+
+    // PT-4: Disparo visible, alien visible pero no hay impacto. El disparo esta por debajo
+    @Test
+    public void testShotNoImpact_AlienVisible() {
+        board.getShot().setX(50);
+        board.getShot().setY(50 + Commons.ALIEN_HEIGHT + 1); // No está en la zona del alien
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo.");
+        assertFalse(alien.isDying(), "El alien no debería ser afectado.");
+        assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
+    }
+
+    // PT-5: Disparo visible, alien visible, fuera del rango Y. El disparo esta por arriba
+    @Test
+    public void testShotNoImpact_OutOfRangeY() {
+        board.getShot().setX(50); // En rango X
+        board.getShot().setY(0); // Fuera del rango Y del alien
+
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo.");
+        assertFalse(alien.isDying(), "El alien no debería estar en estado 'muriendo'.");
+        assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
+    }
+
+    // PT-6: Disparo visible, alien visible, fuera del rango X por la derecha
+    @Test
+    public void testShotNoImpact_OutOfRangeX() {
+        board.getShot().setX(50 + Commons.ALIEN_WIDTH + 1); // Fuera del rango X
+        board.getShot().setY(0); // En rango Y
+
+        Alien alien = new Alien(50, 0);
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo.");
+        assertFalse(alien.isDying(), "El alien no debería estar en estado 'muriendo'.");
+        assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
+    }
+
+    // PT-7: Disparo visible, alien visible, fuera del rango X por la izquierda
+    @Test
+    public void testShotNoImpact_OutOfRangeX2() {
+        board.getShot().setX(30); // Fuera del rango X
+        board.getShot().setY(0);
+
+        Alien alien = new Alien(50, 0);
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo.");
+        assertFalse(alien.isDying(), "El alien no debería estar en estado 'muriendo'.");
+        assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
+    }
+
+    // PT-8: Disparo visible, alien no visible, sin impacto
+    @Test
+    public void testShotNoImpact_AlienNotVisible() {
+        board.getShot().setX(50);
+        board.getShot().setY(0);
+
+        Alien alien = new Alien(50, 0);
+        alien.die(); // Alien no visible
+        aliens.add(alien);
+
+        board.setDeaths(1);
+
+        board.update_shots();
+
+        assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo.");
+        assertFalse(alien.isDying(), "El alien no debería ser afectado.");
+        assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
+    }
 }
