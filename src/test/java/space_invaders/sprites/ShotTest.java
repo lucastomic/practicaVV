@@ -21,6 +21,8 @@ public class ShotTest {
     Teniendo en cuenta:
     int BOARD_WIDTH = 358;
     int BOARD_HEIGHT = 350;
+    y que  H_SPACE = 6
+           V_SPACE = -1
     Caso de prueba: Inicialización dentro de los límites (centro del tablero)
     Entrada: Shot(179, 175)
     Salida esperada: Las coordenadas del disparo deberían ser:
@@ -28,8 +30,8 @@ public class ShotTest {
     */
     @Test
     void testShotInitializationWithinBounds() {
-        int x = Commons.BOARD_WIDTH / 2;
-        int y = Commons.BOARD_HEIGHT / 2;
+        int x = (Commons.BOARD_WIDTH) / 2;
+        int y = (Commons.BOARD_HEIGHT) / 2;
         shot = new Shot(x, y);
 
         assertEquals(x + 6, shot.getX()); // H_SPACE = 6
@@ -40,8 +42,8 @@ public class ShotTest {
     Caso de prueba: Límite inferior
     Entrada: Shot(179, 0) y Shot(179, 1)
     Salida esperada: Las coordenadas del disparo deberían ser:
-    (179 + H_SPACE, 0) 
-    (179 + H_SPACE, 0)
+    (185, 0)
+    (185, 0)
     */
     @Test
     void testShotInitializationAtLowerBounds() {
@@ -57,7 +59,8 @@ public class ShotTest {
     /*
     Caso de prueba: Fuera del límite inferior
     Entrada: Shot(179, -1)
-    Salida esperada: Coordenadas del disparo en (179 + H_SPACE, 1)
+    Salida esperada: Las coordenadas del disparo deberían ser:
+    (179 + H_SPACE, 0)
     */
     @Test
     void testShotInitializationOutOfLowerBounds() {
@@ -68,31 +71,31 @@ public class ShotTest {
 
     /*
     Caso de prueba: Límite superior
-    Entrada: Shot(179, 350) y Shot(179, 349)
-    Salida esperada:
-    Coordenadas del disparo:
-    (179 + H_SPACE, BOARD_HEIGHT - 1)  = (185, 349)
+    Entrada: Shot(179, 351) y Shot(179, 350)
+    Salida esperada: Las coordenadas del disparo deberían ser:
+    (179 + H_SPACE, BOARD_HEIGHT - 1)  = (185, 350)
     (179 + H_SPACE, BOARD_HEIGHT - 1)  = (185, 349)
     */
     @Test
     void testShotInitializationAtUpperBounds() {
-        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT);
+        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT + 1);
         assertEquals(Commons.BOARD_WIDTH / 2 + 6, shot.getX());
-        assertEquals(Commons.BOARD_HEIGHT - 1, shot.getY());
+        assertEquals(Commons.BOARD_HEIGHT, shot.getY());
 
-        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT - 1);
+        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT);
         assertEquals(Commons.BOARD_WIDTH / 2 + 6, shot.getX());
         assertEquals(Commons.BOARD_HEIGHT - 1, shot.getY());
     }
 
     /*
     Caso de prueba: Fuera del límite superior
-    Entrada: Shot(179, 351)
-    Salida esperada: Coordenadas del disparo en (179 + H_SPACE, BOARD_HEIGHT) = (185,350)
+    Entrada: Shot(179, 352)
+    Salida esperada: Las coordenadas del disparo deberían ser:
+     (179 + H_SPACE, BOARD_HEIGHT) = (185,350)
     */
     @Test
     void testShotInitializationOutOfUpperBounds() {
-        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT + 1);
+        shot = new Shot(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT + 2);
         assertEquals(Commons.BOARD_WIDTH / 2 + 6, shot.getX());
         assertEquals(Commons.BOARD_HEIGHT, shot.getY());
     }
@@ -127,31 +130,31 @@ public class ShotTest {
 
     /*
     Caso de prueba: Límite derecho
-    Entrada: Shot(358, 175) y Shot(357, 175)
+    Entrada: Shot(352, 175) y Shot(351, 175)
     Salida esperada:
     Coordenadas del disparo en
-    (BOARD_WIDTH + H_SPACE, 174) = (364,174)
-    (BOARD_WIDTH - 1 + H_SPACE, 174) = (363, 174)
+    (BOARD_WIDTH, 174) = (358,174)
+    (BOARD_WIDTH - 1, 174) = (357, 174)
     */
     @Test
     void testShotInitializationAtRightBounds() {
-        shot = new Shot(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT / 2);
+        shot = new Shot(Commons.BOARD_WIDTH - 6, Commons.BOARD_HEIGHT / 2);
         assertEquals(Commons.BOARD_WIDTH, shot.getX());
         assertEquals(Commons.BOARD_HEIGHT / 2 - 1, shot.getY());
 
-        shot = new Shot(Commons.BOARD_WIDTH - 1, Commons.BOARD_HEIGHT / 2);
-        assertEquals(Commons.BOARD_WIDTH, shot.getX());
+        shot = new Shot(Commons.BOARD_WIDTH - 7, Commons.BOARD_HEIGHT / 2);
+        assertEquals(Commons.BOARD_WIDTH - 1, shot.getX());
         assertEquals(Commons.BOARD_HEIGHT / 2 - 1, shot.getY());
     }
 
     /*
     Caso de prueba: Fuera del límite derecho
-    Entrada: Shot(BOARD_WIDTH + 1, 175)
-    Salida esperada: Coordenadas del disparo en (BOARD_WIDTH - 1 + H_SPACE, 174)
+    Entrada: Shot(353, 175)
+    Salida esperada: Coordenadas del disparo en (BOARD_WIDTH, 174)
     */
     @Test
     void testShotInitializationOutOfRightBounds() {
-        shot = new Shot(Commons.BOARD_WIDTH + 1, Commons.BOARD_HEIGHT / 2);
+        shot = new Shot(Commons.BOARD_WIDTH - 5, Commons.BOARD_HEIGHT / 2);
         assertEquals(Commons.BOARD_WIDTH , shot.getX());
         assertEquals(Commons.BOARD_HEIGHT / 2 - 1, shot.getY());
     }
