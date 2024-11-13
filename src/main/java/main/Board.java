@@ -79,8 +79,13 @@ public class Board extends JPanel {
 
     /**
      * Incializa la partida.
-     * Crea las filas de alienígenas, asignando a cada uno su posición inicial
+     * Crea las filas de alienígenas, creando tantos alienígenas como indica la constante Commons.NUMBER_OF_ALIENS_TO_DESTROY.
+     * Coloca los alienígenas en formación, partiendo para su coordenada X desde la posición Commons.ALIEN_INIT_X y para la coordenada Y
+     * desde Commons.ALIEN_INIT_Y. Para generar la formación en cuadrícula, va sumando 18 a cada una de las coordenadas entre un
+     * alienígena y el siguiente.
+     * También crea un jugador y el disparo con el que podrá matar a los aliens.
      * */
+
     private void gameInit() {
 
         this.aliens = new ArrayList<>();
