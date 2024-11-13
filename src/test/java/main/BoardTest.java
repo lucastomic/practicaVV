@@ -795,7 +795,7 @@ public class BoardTest {
         bomb.setDestroyed(true); // Bomba inicialmente destruida
         aliens.add(alien);
 
-        // Controla aleatoriedad para garantizar que no es Commons.CHANCE
+        // Controla aleatoriedad para garantizar que es Commons.CHANCE
         board.setGenerator(new GeneratorMock(Commons.CHANCE));
         Player player = board.getPlayer();
 
