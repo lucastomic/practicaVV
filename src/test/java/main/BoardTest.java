@@ -1,5 +1,6 @@
 package main;
 
+import mocks.GeneratorMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -711,4 +712,171 @@ public class BoardTest {
         assertFalse(alien.isDying(), "El alien no debería ser afectado.");
         assertEquals(1, board.getDeaths(), "El contador de muertes no debería cambiar.");
     }
+
+    // TD-1: Bomba activa, colisión con jugador, jugador muere y bomba destruida
+    @Test
+    public void testBombHitsPlayerAndDestroysIt() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(false); // Bomba activa
+        bomb.setX(100);
+        bomb.setY(100);
+        aliens.add(alien);
+
+        Player player = board.getPlayer();
+        player.setX(100);
+        player.setY(100);
+
+        board.update_bomb();
+
+        assertTrue(player.isDying(), "El jugador debería estar en estado 'muriendo'.");
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida tras impactar al jugador.");
+    }
+
+    // TD-2: Bomba activa, sin colisión con jugador, toca el suelo y se destruye
+    @Test
+    public void testBombReachesGroundAndIsDestroyed() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(false); // Bomba activa
+        bomb.setY(Commons.GROUND - Commons.BOMB_HEIGHT - 1); // Posición justo antes del suelo
+        Player player = board.getPlayer();
+
+        aliens.add(alien);
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida tras alcanzar el suelo.");
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+    }
+
+    // TD-3: Bomba activa, sin colisión con jugador ni suelo, baja una posición
+    @Test
+    public void testBombMovesDownWithoutCollisionOrGroundHit() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(false);
+        bomb.setY(100);
+        aliens.add(alien);
+        Player player = board.getPlayer();
+
+        board.update_bomb();
+
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+        assertEquals(101, bomb.getY(), "La bomba debería moverse hacia abajo.");
+        assertFalse(bomb.isDestroyed(), "La bomba no debería estar destruida.");
+    }
+
+    // TD-4: Alien visible, bomba no activa, bomba generada en posición del alien, hay colisión
+    @Test
+    public void testBombGeneratedHitsPlayer() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+
+        // Controla aleatoriedad para garantizar generación de bomba
+        board.setGenerator(new GeneratorMock(Commons.CHANCE));
+        Player player = board.getPlayer();
+        player.setX(50); // Mismo X que la bomba
+        player.setY(50); // Mismo Y que la bomba
+
+        board.update_bomb();
+
+        assertTrue(player.isDying(), "El jugador debería estar en estado 'muriendo'.");
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida tras impactar al jugador.");
+    }
+
+    // TD-5: Alien visible, bomba no activa, bomba generada en posición del alien, no hay colisión pero toca el suelo
+    @Test
+    public void testBombGeneratedHitsGround() {
+        Alien alien = new Alien(50, Commons.GROUND - Commons.BOMB_HEIGHT - 1); // Posición Y justo encima del suelo
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+
+        // Controla aleatoriedad para garantizar que no es Commons.CHANCE
+        board.setGenerator(new GeneratorMock(Commons.CHANCE));
+        Player player = board.getPlayer();
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida tras alcanzar el suelo.");
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+    }
+
+    // TD-6: Alien visible, bomba no activa, bomba generada en posición del alien, no hay colisión ni toca el suelo
+    @Test
+    public void testBombGeneratedMovesDown() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+        Player player = board.getPlayer();
+
+        // Controla aleatoriedad para garantizar que es Commons.CHANCE
+        board.setGenerator(new GeneratorMock(Commons.CHANCE));
+        board.update_bomb();
+
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+        assertEquals(51, bomb.getY(), "La bomba debería moverse hacia abajo.");
+        assertFalse(bomb.isDestroyed(), "La bomba no debería estar destruida.");
+    }
+
+    // TD-7: Alien visible, bomba no activa, no se genera. Hay colisión
+    @Test
+    public void testNoBombGeneratedButHitsPlayer() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+
+        // Controla aleatoriedad para garantizar la NO generación de bomba
+        board.setGenerator(new GeneratorMock(Commons.CHANCE - 1));
+        Player player = board.getPlayer();
+        player.setX(50); // Mismo X que la bomba
+        player.setY(50); // Mismo Y que la bomba
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+    }
+
+    // TD-8: Alien visible, bomba no activa, no se genera. No hay colisión pero toca el suelo
+    @Test
+    public void testNoBombGeneratedButHitsGround() {
+        Alien alien = new Alien(50, Commons.GROUND - Commons.BOMB_HEIGHT - 1); // Posición Y justo encima del suelo
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+
+        // Controla aleatoriedad para garantizar que no es Commons.CHANCE
+        board.setGenerator(new GeneratorMock(Commons.CHANCE - 1));
+        Player player = board.getPlayer();
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida tras alcanzar el suelo.");
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+    }
+
+    // TD-9: Alien visible, bomba no activa, no se genera. No hay colisión ni toca el suelo
+    @Test
+    public void testNoBombGeneratedNoCollisionOrGroundHit() {
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba inicialmente destruida
+        aliens.add(alien);
+
+        // Controla aleatoriedad para garantizar que no es Commons.CHANCE
+        board.setGenerator(new GeneratorMock(Commons.CHANCE - 1));
+        Player player = board.getPlayer();
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
+        assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
+    }
+
 }
