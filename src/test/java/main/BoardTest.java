@@ -15,12 +15,12 @@ public class BoardTest {
 
     private Board board;
     private List<Alien> aliens;
-
     @BeforeEach
     public void setUp() {
         board = new Board();
         aliens = new ArrayList<>();
         board.setAliens(aliens); // Asignamos la lista de aliens a la board para los tests de update_aliens
+        board.setPlayer(new Player());
         board.setShot(new Shot());
     }
 
@@ -64,43 +64,43 @@ public class BoardTest {
     // Test SR-1: Dirección derecha, alien fuera del tablero por la izquierda
     @Test
     public void testDirectionRight_AlienLeftOutOfBounds() {
-        board.setDirection(-1);
+        board.setDirection(1);
         aliens.add(new Alien(-10, 50));  // Posición fuera de tablero por la izquierda
 
         board.update_aliens();
 
-        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (derecha)");
+        assertEquals(1, board.getDirection(), "La dirección debería permanecer en 1 (derecha)");
     }
 
     // Test SR-2: Dirección derecha, alien en el margen izquierdo
     @Test
     public void testDirectionRight_AlienAtLeftMargin() {
-        board.setDirection(-1);
+        board.setDirection(1);
         aliens.add(new Alien(Commons.BORDER_LEFT, 50));  // Posición en el margen izquierdo
 
         board.update_aliens();
 
-        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (derecha)");
+        assertEquals(1, board.getDirection(), "La dirección debería permanecer en 1 (derecha)");
     }
 
     // Test SR-3: Dirección derecha, alien en el centro del tablero
     @Test
     public void testDirectionRight_AlienAtCenter() {
-        board.setDirection(-1);
+        board.setDirection(1);
         aliens.add(new Alien(Commons.BOARD_WIDTH / 2, 50));  // Posición en el centro
 
         board.update_aliens();
 
-        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (derecha)");
+        assertEquals(1, board.getDirection(), "La dirección debería permanecer en 1 (derecha)");
     }
 
     // Test SR-4: Dirección derecha, alien en el margen derecho
     @Test
     public void testDirectionRight_AlienAtRightMargin() {
-        board.setDirection(-1);
+        board.setDirection(1);
         aliens.add(new Alien(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT, 50));  // Posición en el margen derecho
         board.update_aliens();
-        assertEquals(1, board.getDirection(), "La dirección debería cambiar a 1 (izquierda)");
+        assertEquals(-1, board.getDirection(), "La dirección debería cambiar a -1 (izquierda)");
         assertTrue(aliens.stream().allMatch(a -> a.getY() == 50 + Commons.GO_DOWN),
                 "Todos los aliens deberían descender una posición");
     }
@@ -108,34 +108,34 @@ public class BoardTest {
     // Test SR-5: Dirección derecha, alien fuera del tablero por la derecha
     @Test
     public void testDirectionRight_AlienRightOutOfBounds() {
-        board.setDirection(-1);
+        board.setDirection(1);
         aliens.add(new Alien(Commons.BOARD_WIDTH + 10, 50));  // Posición fuera de tablero por la derecha
 
         board.update_aliens();
 
-        assertEquals(1, board.getDirection(), "La dirección debería cambiar a 1 (izquierda)");
+        assertEquals(-1, board.getDirection(), "La dirección debería cambiar a -1 (izquierda)");
     }
 
     // Test SR-6: Dirección izquierda, alien fuera del tablero por la izquierda
     @Test
     public void testDirectionLeft_AlienLeftOutOfBounds() {
-        board.setDirection(1);
+        board.setDirection(-1);
         aliens.add(new Alien(-10, 50));  // Posición fuera de tablero por la izquierda
 
         board.update_aliens();
 
-        assertEquals(-1, board.getDirection(), "La dirección debería cambiar a -1 (derecha)");
+        assertEquals(1, board.getDirection(), "La dirección debería cambiar 1 (derecha)");
     }
 
     // Test SR-7: Dirección izquierda, alien en el margen izquierdo
     @Test
     public void testDirectionLeft_AlienAtLeftMargin() {
-        board.setDirection(1);
+        board.setDirection(-1);
         aliens.add(new Alien(Commons.BORDER_LEFT, 50));  // Posición en el margen izquierdo
 
         board.update_aliens();
 
-        assertEquals(-1, board.getDirection(), "La dirección debería cambiar a -1 (derecha)");
+        assertEquals(1, board.getDirection(), "La dirección debería cambiar a 1 (derecha)");
         assertTrue(aliens.stream().allMatch(a -> a.getY() == 50 + Commons.GO_DOWN),
                 "Todos los aliens deberían descender una posición");
     }
@@ -143,37 +143,44 @@ public class BoardTest {
     // Test SR-8: Dirección izquierda, alien en el centro del tablero
     @Test
     public void testDirectionLeft_AlienAtCenter() {
-        board.setDirection(1);
+        board.setDirection(-1);
         aliens.add(new Alien(Commons.BOARD_WIDTH / 2, 50));  // Posición en el centro
 
         board.update_aliens();
 
-        assertEquals(1, board.getDirection(), "La dirección debería permanecer en 1 (izquierda)");
+        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (izquierda)");
     }
 
     // Test SR-9: Dirección izquierda, alien en el margen derecho
     @Test
     public void testDirectionLeft_AlienAtRightMargin() {
-        board.setDirection(1);
+        board.setDirection(-1);
         aliens.add(new Alien(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT, 50));  // Posición en el margen derecho
 
         board.update_aliens();
 
-        assertEquals(1, board.getDirection(), "La dirección debería permanecer en 1 (izquierda)");
+        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (izquierda)");
     }
 
     // Test SR-10: Dirección izquierda, alien fuera del tablero por la derecha
     @Test
     public void testDirectionLeft_AlienRightOutOfBounds() {
-        board.setDirection(1);
+        board.setDirection(-1);
         aliens.add(new Alien(Commons.BOARD_WIDTH + 10, 50));  // Posición fuera de tablero por la derecha
-        assertThrows(IllegalArgumentException.class, board::update_aliens);
+
+        board.update_aliens();
+
+        assertEquals(-1, board.getDirection(), "La dirección debería permanecer en -1 (izquierda)");
     }
+
+
     // Test SR-11: Dirección fuera de valores esperados, alien fuera del tablero por la izquierda
     @Test
     public void testInvalidDirection_AlienLeftOutOfBounds() {
         board.setDirection(999);  // Valor fuera de los valores esperados
         aliens.add(new Alien(-10, 50));  // Posición fuera de tablero por la izquierda
+        board.update_aliens();
+
         assertThrows(IllegalArgumentException.class, board::update_aliens);
 
     }
@@ -183,6 +190,8 @@ public class BoardTest {
     public void testInvalidDirection_AlienRightOutOfBounds() {
         board.setDirection(999);  // Valor fuera de los valores esperados
         aliens.add(new Alien(Commons.BOARD_WIDTH + 10, 50));  // Posición fuera de tablero por la derecha
+        board.update_aliens();
+
         assertThrows(IllegalArgumentException.class, board::update_aliens);
     }
 
@@ -406,21 +415,21 @@ public class BoardTest {
     }
 
 
-    // VE-1: Disparo y alien visibles, hay colisión
+    // VE-1: Disparo y alien visibles, hay colisión, shot.y>=4
     @Test
     public void testImpact_VisibleShotVisibleAlien() {
         board.getShot().setX(55);
         board.getShot().setY(55);
-
         Alien alien = new Alien(50, 50);
         aliens.add(alien);
 
         board.update_shots();
         assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
         assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+        assertEquals(board.getDeaths(),1, "Las muertes deben aumentar");
     }
 
-    // VE-2: Disparo y alien visibles, no hay colisión
+    // VE-2: Disparo y alien visibles, no hay colisión, shot.y>=4
     @Test
     public void testNoImpact_VisibleShotVisibleAlien() {
         board.getShot().setX(20);
@@ -432,9 +441,11 @@ public class BoardTest {
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes no deberian aumentar");
+        assertEquals(board.getShot().getY(), 16, "El disparo deberia subir");
     }
 
-    // VE-3: Disparo visible, alien no visible, hay colisión (en la misma posición)
+    // VE-3: Disparo visible, alien no visible, hay colisión (en la misma posición), shot.y>=4
     @Test
     public void testImpact_VisibleShotInvisibleAlien() {
         board.getShot().setX(55);
@@ -447,9 +458,11 @@ public class BoardTest {
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes no deberian aumentar");
+        assertEquals(board.getShot().getY(), 51, "El disparo deberia subir");
     }
 
-    // VE-4: Disparo visible, alien no visible, no hay colisión
+    // VE-4: Disparo visible, alien no visible, no hay colisión, shot.y>=4
     @Test
     public void testNoImpact_VisibleShotInvisibleAlienNoCollision() {
         board.getShot().setX(20);
@@ -462,8 +475,75 @@ public class BoardTest {
         board.update_shots();
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir activo, sin impacto");
         assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(),0, "Las muertes no deberian aumentar");
+        assertEquals(board.getShot().getY(), 16, "El disparo deberia subir");
     }
-    // VE-5: Disparo no visible, alien no visible, hay colisión
+
+    // VE-5: Disparo visible, hay colisión, shot.y < 4
+    @Test
+    public void testImpact_ShotYBelowThreshold() {
+        board.getShot().setX(55);
+        board.getShot().setY(3); // shot.y < 4
+        Alien alien = new Alien(50, 3);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
+        assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
+        assertEquals(board.getDeaths(), 1, "Las muertes deben aumentar");
+    }
+
+    // VE-6: Disparo visible, no hay colisión, shot.y < 4
+    @Test
+    public void testNoImpact_ShotYBelowThreshold() {
+        board.getShot().setX(20);
+        board.getShot().setY(3); // shot.y < 4
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.update_shots();
+        assertEquals(board.getShot().getY(), 3, "El disparo no deberia subir");
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer cuando shot.y < 4");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(), 0, "Las muertes no deberían aumentar");
+    }
+
+    // VE-7: Alien no visible, hay colisión, shot.y < 4
+    @Test
+    public void testNoImpact_InvisibleAlien_ShotYBelowThreshold() {
+        board.getShot().setX(50);
+        board.getShot().setY(3); // shot.y < 4
+
+        Alien alien = new Alien(3, 50);
+        alien.die(); // Alien no visible
+        aliens.add(alien);
+
+        board.update_shots();
+        assertEquals(board.getShot().getY(), 3, "El disparo no deberia subir");
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer cuando shot.y < 4");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(), 0, "Las muertes no deberían aumentar");
+    }
+
+    // VE-8: Alien no visible, no hay colisión, shot.y < 4
+    @Test
+    public void testNoImpact_NoCollisionInvisibleAlien_ShotYBelowThreshold() {
+        board.getShot().setX(20);
+        board.getShot().setY(3); // shot.y < 4
+
+        Alien alien = new Alien(50  , 50);
+        alien.die(); // Alien no visible
+        aliens.add(alien);
+
+        board.update_shots();
+        assertEquals(board.getShot().getY(), 3, "El disparo no deberia subir");
+        assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer cuando shot.y < 4");
+        assertFalse(alien.isDying(), "El alien no debería estar afectado");
+        assertEquals(board.getDeaths(), 0, "Las muertes no deberían aumentar");
+    }
+
+
+    // CAE-1: Caso especial cuando el disparo no es visible
     @Test
     public void testImpact_InvisibleShotVisibleAlien() {
         board.getShot().setX(55);
