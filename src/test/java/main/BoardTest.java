@@ -879,4 +879,81 @@ public class BoardTest {
         assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
     }
 
+
+    @Test
+    void testAliensOnRightAndWin() {
+        // Camino: 1-2-3-4-5-6-5-7-1-11-12-13-14-15-16-17-18-12
+        Alien alien = new Alien(Commons.BOARD_WIDTH - 1, 0); // En el borde derecho
+        //alien.setVisible(true);
+        aliens.add(alien);
+
+        board.setDirection(1);
+        board.update_aliens();
+
+        assertFalse(board.isInGame());
+        assertEquals("Invasion!", board.getMessage());
+    }
+
+    @Test
+    void testNoAliens() {
+        // Camino: 1-11-12
+        board.update_aliens();
+
+        assertTrue(board.isInGame()); // El juego sigue porque no hay aliens
+    }
+
+    @Test
+    void testAliensOnLeftAndWin() {
+        // Camino: 1-2-3-7-8-9-10-9-1-11-12-13-14-15-16-17-18-12-fin
+        Alien alien = new Alien(Commons.BORDER_LEFT + 1, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
+        //alien.setVisible(true);
+        aliens.add(alien);
+
+        board.setDirection(-1);
+        board.update_aliens();
+
+        assertFalse(board.isInGame());
+        assertEquals("Invasion!", board.getMessage());
+    }
+
+    @Test
+    void testAliensNotOnEdgesAndWin() {
+        // Camino: 1-2-3-7-1-11-12-13-14-15-16-17-18-12-fin
+        Alien alien = new Alien(50, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // No en los bordes
+        //alien.setVisible(true);
+        aliens.add(alien);
+
+        board.setDirection(0);
+        board.update_aliens();
+
+        assertFalse(board.isInGame());
+        assertEquals("Invasion!", board.getMessage());
+    }
+
+    @Test
+    void testAliensNotWinning() {
+        // Camino: 1-2-3-7-1-11-12-13-14-15-16-18-12-fin
+        Alien alien = new Alien(50, 50); // No alcanzan el borde inferior
+        //alien.setVisible(true);
+        aliens.add(alien);
+
+        board.setDirection(0);
+        board.update_aliens();
+
+        assertTrue(board.isInGame());
+    }
+
+    @Test
+    void testAliensNotVisible() {
+        // Camino: 1-2-3-7-1-11-12-13-14-12-fin
+        Alien alien = new Alien(50, 50); // No visibles
+        //alien.setVisible(false);
+        aliens.add(alien);
+
+        board.setDirection(0);
+        board.update_aliens();
+
+        assertTrue(board.isInGame());
+    }
+
 }
