@@ -886,7 +886,7 @@ public class BoardTest {
     @Test
     void testAliensOnRightAndWin() {
         // Camino: 1-2-3-4-5-6-5-7-1-11-12-13-14-15-16-17-18-12
-        Alien alien = new Alien(Commons.BOARD_WIDTH - 1, 0); // En el borde derecho
+        Alien alien = new Alien(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT, Commons.GROUND - Commons.ALIEN_HEIGHT); // En el borde derecho
         //alien.setVisible(true);
         aliens.add(alien);
 
@@ -894,6 +894,7 @@ public class BoardTest {
         board.update_aliens();
 
         assertFalse(board.isInGame());
+
         assertEquals("Invasion!", board.getMessage());
     }
 
@@ -908,7 +909,7 @@ public class BoardTest {
     @Test
     void testAliensOnLeftAndWin() {
         // Camino: 1-2-3-7-8-9-10-9-1-11-12-13-14-15-16-17-18-12-fin
-        Alien alien = new Alien(Commons.BORDER_LEFT + 1, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
+        Alien alien = new Alien(Commons.BORDER_LEFT, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
         //alien.setVisible(true);
         aliens.add(alien);
 
@@ -926,7 +927,7 @@ public class BoardTest {
         //alien.setVisible(true);
         aliens.add(alien);
 
-        board.setDirection(0);
+        board.setDirection(-1);
         board.update_aliens();
 
         assertFalse(board.isInGame());
@@ -950,7 +951,9 @@ public class BoardTest {
     void testAliensNotVisible() {
         // Camino: 1-2-3-7-1-11-12-13-14-12-fin
         Alien alien = new Alien(50, 50); // No visibles
-        //alien.setVisible(false);
+
+        // NO PUEDO TOCAR LA FUNCIÓN SI ES PROTECTED?
+        // alien.setVisible(false);
         aliens.add(alien);
 
         board.setDirection(0);
