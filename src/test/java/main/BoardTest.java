@@ -879,6 +879,9 @@ public class BoardTest {
         assertFalse(player.isDying(), "El jugador no debería estar en estado 'muriendo'.");
     }
 
+    /*
+    Pruebas update_aliens
+     */
 
     @Test
     void testAliensOnRightAndWin() {
