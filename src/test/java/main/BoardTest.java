@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import space_invaders.sprites.Alien;
 import space_invaders.sprites.Player;
 import space_invaders.sprites.Shot;
+import space_invaders.sprites.Sprite;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -959,4 +961,134 @@ public class BoardTest {
         assertTrue(board.isInGame());
     }
 
+
+    @Test
+    public void testUpdateBomb_PT1() throws Exception {
+        // Caso: shot != Commons.CHANCE y la bomba ya está destruida
+        GeneratorMock mockGenerator = new GeneratorMock(14);  // shot != Commons.CHANCE (usamos 14 para simular que no se genera la bomba)
+        board.setGenerator(mockGenerator); // Usamos el mock en lugar de un generador real
+
+        Alien alien = new Alien(100, 100); // Alien en posición arbitraria
+        aliens.add(alien);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true); // Bomba destruida
+
+        // Usamos reflexión para acceder al método setVisible
+        Method setVisibleMethod = Sprite.class.getDeclaredMethod("setVisible", boolean.class);
+        setVisibleMethod.setAccessible(true);  // Permite acceder al método `protected`
+        setVisibleMethod.invoke(alien, true);  // Establece el alien como visible
+
+        board.update_bomb();
+
+        // Verifica que la bomba no se ha actualizado
+        assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
+        assertEquals(0, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
+        assertEquals(0, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
+    }
+
+
+    @Test
+    public void testUpdateBomb_PT2() throws Exception {
+        // Caso: shot == Commons.CHANCE, alien visible, bomba destruida
+        GeneratorMock mockGenerator = new GeneratorMock(Commons.CHANCE);  // shot == Commons.CHANCE
+        board.setGenerator(mockGenerator);  // Usamos el mock
+
+        Alien alien = new Alien(50, 100);  // Alien en posición arbitraria
+        aliens.add(alien);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true);  // Bomba destruida
+
+        // Usamos reflexión para acceder al método setVisible
+        Method setVisibleMethod = Sprite.class.getDeclaredMethod("setVisible", boolean.class);
+        setVisibleMethod.setAccessible(true);  // Permite acceder al método `protected`
+        setVisibleMethod.invoke(alien, true);  // Establece el alien como visible
+
+        board.update_bomb();
+
+        // Verifica que la bomba se ha colocado sobre el alien
+        assertFalse(bomb.isDestroyed(), "La bomba no debería estar destruida.");
+        assertEquals(50, bomb.getX(), "La posición X de la bomba debería ser la del alien.");
+        assertEquals(100, bomb.getY(), "La posición Y de la bomba debería ser la del alien.");
+    }
+
+
+    @Test
+    public void testUpdateBomb_PT3() throws Exception {
+        // Caso: shot != Commons.CHANCE, alien no visible, bomba destruida
+        GeneratorMock mockGenerator = new GeneratorMock(14);  // shot != Commons.CHANCE
+        board.setGenerator(mockGenerator); // Usamos el mock
+
+        Alien alien = new Alien(100, 100);  // Alien en posición arbitraria
+        aliens.add(alien);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true);  // Bomba destruida
+
+        // Usamos reflexión para acceder al método setVisible
+        Method setVisibleMethod = Sprite.class.getDeclaredMethod("setVisible", boolean.class);
+        setVisibleMethod.setAccessible(true);  // Permite acceder al método `protected`
+        setVisibleMethod.invoke(alien, false);  // Establece el alien como no visible
+
+        board.update_bomb();
+
+        // Verifica que la bomba no se ha actualizado
+        assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
+        assertEquals(0, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
+        assertEquals(0, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
+    }
+
+
+
+
+    @Test
+    public void testUpdateBomb_PT4() throws Exception {
+        // Caso: shot == Commons.CHANCE, bomba activa, colisión con el jugador
+        GeneratorMock mockGenerator = new GeneratorMock(Commons.CHANCE);  // shot == Commons.CHANCE
+        board.setGenerator(mockGenerator); // Usamos el mock
+
+        Alien alien = new Alien(100, 200);  // Alien en posición arbitraria
+        aliens.add(alien);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setX(100);  // Bomba en la posición del alien
+        bomb.setY(200);
+        bomb.setDestroyed(false); // Bomba activa
+
+        Player player = board.getPlayer();
+        player.setX(100); // Mismo X que la bomba
+        player.setY(200); // Mismo Y que la bomba
+
+        // Usamos reflexión para acceder al método setVisible de Sprite para el jugador
+        Method setVisibleMethod = Sprite.class.getDeclaredMethod("setVisible", boolean.class);
+        setVisibleMethod.setAccessible(true);  // Permite acceder al método `protected`
+        setVisibleMethod.invoke(player, true);  // Establece el jugador como visible
+
+        board.update_bomb();
+
+        // Verifica que la bomba se destruye al colisionar con el jugador
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida.");
+        assertTrue(player.isDying(), "El jugador debería estar en estado 'muriendo'.");
+    }
+
+
+
+    @Test
+    public void testUpdateBomb_PT5() throws Exception {
+        // Caso: Bomba tocando el suelo
+        GeneratorMock mockGenerator = new GeneratorMock(Commons.CHANCE);  // shot == Commons.CHANCE
+        board.setGenerator(mockGenerator); // Usamos el mock
+
+        Alien alien = new Alien(100, 100);  // Alien en posición arbitraria
+        aliens.add(alien);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setY(Commons.GROUND - Commons.BOMB_HEIGHT - 1);  // Posición justo antes del suelo
+        bomb.setDestroyed(false);  // Bomba activa
+
+        board.update_bomb();
+
+        // Verifica que la bomba se destruye al llegar al suelo
+        assertTrue(bomb.isDestroyed(), "La bomba debería estar destruida.");
+    }
+
+
 }
+
+
