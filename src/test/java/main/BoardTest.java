@@ -25,32 +25,28 @@ public class BoardTest {
         board.setShot(new Shot());
     }
 
-    // Tests de inicialización (gameInit)
+    //Test GI-1
     @Test
     public void testGameInit_PlayerInitialized() {
         Player player = board.getPlayer();
         assertNotNull(player, "El jugador no fue inicializado correctamente");
     }
-
+    //Test GI-2
     @Test
     public void testGameInit_ShotInitialized() {
         Shot shot = board.getShot();
         assertNotNull(shot, "El disparo no fue inicializado correctamente");
     }
-
+    //Test GI-3
     @Test
-    public void testGameInit_AliensInitialized() {
+    public void testAlienPositions() {
+        board.gameInit();
         List<Alien> aliens = board.getAliens();
-        assertNotNull(aliens, "La lista de aliens no fue inicializada correctamente");
-        assertEquals(24, aliens.size(), "La cantidad de aliens inicializados no es correcta");
-    }
 
-    @Test
-    public void testGameInit_AlienPositions() {
-        List<Alien> aliens = board.getAliens();
         int expectedX = Commons.ALIEN_INIT_X;
         int expectedY = Commons.ALIEN_INIT_Y;
 
+        assertEquals(aliens.size(), Commons.NUMBER_OF_ALIENS_TO_DESTROY, "El número de aliens no es correcto" );
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
                 Alien alien = aliens.get(i * 6 + j);
@@ -61,6 +57,7 @@ public class BoardTest {
             }
         }
     }
+
 
     // Test SR-1: Dirección derecha, alien fuera del tablero por la izquierda
     @Test
