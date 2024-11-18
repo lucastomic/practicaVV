@@ -14,6 +14,12 @@ public class ShotTest {
         shot = new Shot();
     }
 
+
+        /*
+    BLACKBOX TESTING
+     */
+
+
     /*
     Teniendo en cuenta:
     int BOARD_WIDTH = 358;
@@ -155,5 +161,18 @@ public class ShotTest {
         assertEquals(Commons.BOARD_WIDTH , shot.getX());
         assertEquals(Commons.BOARD_HEIGHT / 2 - 1, shot.getY());
     }
+    /*
+    WHITEBOX TESTING
+     */
+    @Test
+    public void testShot() {
 
+        shot = new Shot(100, 200);
+
+        int expectedX = 100 + 6;
+        int expectedY = 200 - 1;
+
+        assertEquals(expectedX, shot.getX());
+        assertEquals(expectedY, shot.getY());
+    }
 }
