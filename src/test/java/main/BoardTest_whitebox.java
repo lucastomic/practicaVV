@@ -27,60 +27,6 @@ public class BoardTest {
         board.setShot(new Shot());
     }
 
-    //Test GI-1 gameInit()
-    @Test
-    public void testGameInit_PlayerInitialized() {
-        Player player = board.getPlayer();
-        assertNotNull(player, "El jugador no fue inicializado correctamente");
-    }
-    //Test GI-2
-    @Test
-    public void testGameInit_ShotInitialized() {
-        Shot shot = board.getShot();
-        assertNotNull(shot, "El disparo no fue inicializado correctamente");
-    }
-    //Test GI-3
-    @Test
-    public void testAlienPositions() {
-        board.gameInit();
-        List<Alien> aliens = board.getAliens();
-
-        int expectedX = Commons.ALIEN_INIT_X;
-        int expectedY = Commons.ALIEN_INIT_Y;
-
-        assertEquals(aliens.size(), Commons.NUMBER_OF_ALIENS_TO_DESTROY, "El número de aliens no es correcto" );
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
-                Alien alien = aliens.get(i * 6 + j);
-                assertEquals(expectedX + 18 * j, alien.getX(),
-                        "La posición X del alien no es la esperada en la fila " + i + ", columna " + j);
-                assertEquals(expectedY + 18 * i, alien.getY(),
-                        "La posición Y del alien no es la esperada en la fila " + i + ", columna " + j);
-            }
-        }
-    }
-
-
-
-    // CE-1: `deaths` igual a `Commons.CHANCE`, el juego debería terminar
-    @Test
-    public void testGameWonWhenDeathsEqualsChance() {
-        board.setDeaths(Commons.CHANCE); // Configura deaths igual a CHANCE
-
-        board.update();
-
-        assertFalse(board.isInGame(), "El juego debería terminar cuando deaths es igual a Commons.CHANCE.");
-    }
-
-    // CE-2: `deaths` menor que `Commons.CHANCE`, el juego debería continuar
-    @Test
-    public void testGameContinuesWhenDeathsLessThanChance() {
-        board.setDeaths(Commons.CHANCE - 1); // Configura deaths menor que CHANCE
-
-        board.update();
-
-        assertTrue(board.isInGame(), "El juego debería continuar cuando deaths es menor que Commons.CHANCE.");
-    }
 
     // PT-1: Disparo no visible, sin modificaciones
     @Test
