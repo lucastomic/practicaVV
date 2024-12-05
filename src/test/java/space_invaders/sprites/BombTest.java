@@ -101,7 +101,7 @@ public class BombTest {
         alien = new Alien(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT-1);
         bomb = alien.new Bomb(Commons.BOARD_WIDTH / 2, Commons.BOARD_HEIGHT-1);
         assertEquals(Commons.BOARD_WIDTH / 2, bomb.getX());
-        assertEquals(Commons.BOARD_HEIGHT, bomb.getY());
+        assertEquals(Commons.BOARD_HEIGHT-1, bomb.getY());
         assertFalse(bomb.isDestroyed());
 
     }
@@ -157,7 +157,7 @@ public class BombTest {
         alien = new Alien(-1,Commons.BOARD_HEIGHT/2);
         bomb = alien.new Bomb(-1, Commons.BOARD_HEIGHT/2);
         assertEquals(0, bomb.getX());
-        assertEquals(Commons.BOARD_HEIGHT, bomb.getY());
+        assertEquals(Commons.BOARD_HEIGHT/2, bomb.getY());
         assertFalse(bomb.isDestroyed());
     }
 
@@ -228,7 +228,7 @@ public class BombTest {
     public void testInitBomb_BothConditionsFalse() {
         bomb = new Alien(0, 0).new Bomb(400, -1);
         assertEquals(Commons.BOARD_WIDTH, bomb.getX());
-        assertEquals(Commons.BOARD_HEIGHT, bomb.getY());
+        assertEquals(0, bomb.getY());
     }
 
 
