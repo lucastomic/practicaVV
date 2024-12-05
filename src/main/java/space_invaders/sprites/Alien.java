@@ -92,17 +92,36 @@ public class Alien extends Sprite {
          * */
         private void initBomb(int x, int y) {
 
-            setDestroyed(false); //La bomba empieza no destruida, hasta que se destruya
+            setDestroyed(false); //La bomba empieza no destruida, hasta que se destruya, cambiamos de true a false esta asignación
 
+            /*
+            Se añade lógica para comprobar que x e y estén entre los valores permitidos, en caso contrario, se modifica este valor convenientemente,
+            aislando x de y para que una no afecte a la otra en efecto dominó, como se explica en la documentación.
+            */
+
+            /*
+            La parte de this.x = Commons.BOARD_WIDTH; es igual que antes, pero la evaluación es directamente mirando si los valores superan los límites y no como
+            un else en caso de que los valores no estén entre los límites, para poder comprobar si además el valor es negativo.
+             */
             if ( x > Commons.BOARD_WIDTH){
                 this.x = Commons.BOARD_WIDTH;
             }
+            /*
+            Se comprueba si el valor es negativo y se modifica en consecuencia
+             */
             else if(x < 0){
                 this.x = 0;
             }
+            /*
+            Se ha dejado la parte del antiguo código como un else, ya que solo queremos que se ejecute si el valor de x (o y) es correcto y dentro de los límites.
+             */
             else{
                 this.x += x;
             }
+            /*
+            La lógica de y aislada para que se compruebe si y está entre los valores permitidos, modificándola en caso contrario.
+            Misma estructura general que x.
+             */
             if( y > Commons.BOARD_HEIGHT){
               this.y = Commons.BOARD_HEIGHT;
             }
@@ -112,19 +131,6 @@ public class Alien extends Sprite {
             else{
                 this.y += y;
             }
-
-
-            /* ANTIGUO CÓDIGO
-            if (x<= Commons.BOARD_WIDTH && y<= Commons.BOARD_HEIGHT) {
-                this.x += x;
-                this.y += y;
-            } else
-            {
-                this.x = Commons.BOARD_WIDTH;
-                this.y = Commons.BOARD_HEIGHT;
-            }
-
-             */
 
             var bombImg = "src/main/resources/images/bomb.png";
             var ii = new ImageIcon(bombImg);

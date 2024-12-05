@@ -34,18 +34,22 @@ public class Shot extends Sprite {
         int H_SPACE = 6;
         int V_SPACE = 1;
 
+        /*
+        Lógica añadida para comprobar valores por debajo de límites inferiores
+        y por encima de los límites superiores, teniendo en cuenta la desviación
+         */
         if ( x > Commons.BOARD_WIDTH - H_SPACE){
             x = Commons.BOARD_WIDTH - H_SPACE;
         }
-        else if(x < 0){
-            x = 0;
+        else if(x < (-1 * H_SPACE) ){
+            x = (-1 * H_SPACE);
         }
 
         if( y > Commons.BOARD_HEIGHT + V_SPACE){
             y = Commons.BOARD_HEIGHT + V_SPACE;
         }
-        else if(y < 0){
-            y = 0;
+        else if(y < H_SPACE){
+            y = H_SPACE;
         }
 
         setX(x + H_SPACE);
