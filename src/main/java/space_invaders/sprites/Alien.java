@@ -92,8 +92,29 @@ public class Alien extends Sprite {
          * */
         private void initBomb(int x, int y) {
 
-            setDestroyed(true);
+            setDestroyed(false); //La bomba empieza no destruida, hasta que se destruya
 
+            if ( x > Commons.BOARD_WIDTH){
+                this.x = Commons.BOARD_WIDTH;
+            }
+            else if(x < 0){
+                this.x = 0;
+            }
+            else{
+                this.x += x;
+            }
+            if( y > Commons.BOARD_HEIGHT){
+              this.y = Commons.BOARD_HEIGHT;
+            }
+            else if(x < 0){
+                this.y = 0;
+            }
+            else{
+                this.y += y;
+            }
+
+
+            /* ANTIGUO CÓDIGO
             if (x<= Commons.BOARD_WIDTH && y<= Commons.BOARD_HEIGHT) {
                 this.x += x;
                 this.y += y;
@@ -102,6 +123,8 @@ public class Alien extends Sprite {
                 this.x = Commons.BOARD_WIDTH;
                 this.y = Commons.BOARD_HEIGHT;
             }
+
+             */
 
             var bombImg = "src/main/resources/images/bomb.png";
             var ii = new ImageIcon(bombImg);
