@@ -125,7 +125,7 @@ public class Alien extends Sprite {
             if( y > Commons.BOARD_HEIGHT){
               this.y = Commons.BOARD_HEIGHT;
             }
-            else if(x < 0){
+            else if(y < 0){
                 this.y = 0;
             }
             else{
