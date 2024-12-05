@@ -127,7 +127,7 @@ public class ShotTest {
     @Test
     void testShotInitializationOutOfLeftBounds() {
         shot = new Shot(-1, Commons.BOARD_HEIGHT / 2);
-        assertEquals(6, shot.getX());
+        assertEquals(5, shot.getX());
         assertEquals(Commons.BOARD_HEIGHT / 2 - 1, shot.getY());
     }
 

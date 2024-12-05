@@ -49,7 +49,7 @@ public class Shot extends Sprite {
             y = Commons.BOARD_HEIGHT + V_SPACE;
         }
         else if(y < H_SPACE){
-            y = H_SPACE;
+            y = V_SPACE;
         }
 
         setX(x + H_SPACE);
