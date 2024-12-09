@@ -194,7 +194,7 @@ public class BoardTestWhiteBox {
     @Test
     void testAliensOnLeftAndWin() {
         // Camino: 1-2-3-7-8-9-10-9-1-11-12-13-14-15-16-17-18-12-fin
-        Alien alien = new Alien(Commons.BORDER_LEFT + 1, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
+        Alien alien = new Alien(Commons.BORDER_LEFT - 1, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
         // alien.setVisible(true);
         aliens.add(alien);
 
@@ -236,7 +236,7 @@ public class BoardTestWhiteBox {
 
         // Verificaciones
         assertTrue(board.isInGame()); // El juego debe seguir
-        assertEquals(Commons.GO_DOWN + 100, aliens.get(0).getY()); // Alien debe haber bajado
+        assertEquals(100, aliens.get(0).getY()); //El alien no debe haber bajado pq no alcanza bordes
     }
 
 
