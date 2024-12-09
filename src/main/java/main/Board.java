@@ -298,7 +298,7 @@ public class Board extends JPanel {
         for (Alien alien : this.aliens) {
             int x = alien.getX();
             //Se ha cambiado <= por >
-            if (x > Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
+            if (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
                 //Cambiar la dirección a -1, porque en 0 no se mueven
                 direction = -1;
                 Iterator<Alien> i1 = this.aliens.iterator();
