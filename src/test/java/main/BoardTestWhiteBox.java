@@ -168,7 +168,7 @@ public class BoardTestWhiteBox {
     @Test
     void testAliensOnRightAndWin() {
         // Camino: 1-2-3-4-5-6-5-7-1-11-12-13-14-15-16-17-18-12
-        Alien alien = new Alien(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT, 0); // En el borde derecho
+        Alien alien = new Alien(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde derecho
         //alien.setVisible(true);
         aliens.add(alien);
 
@@ -194,7 +194,7 @@ public class BoardTestWhiteBox {
     @Test
     void testAliensOnLeftAndWin() {
         // Camino: 1-2-3-7-8-9-10-9-1-11-12-13-14-15-16-17-18-12-fin
-        Alien alien = new Alien(Commons.BORDER_LEFT + 1, 0); // En el borde izquierdo
+        Alien alien = new Alien(Commons.BORDER_LEFT + 1, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // En el borde izquierdo
         // alien.setVisible(true);
         aliens.add(alien);
 
@@ -210,7 +210,7 @@ public class BoardTestWhiteBox {
     @Test
     void testAliensNotOnEdgesAndWin() {
         // Camino: 1-2-3-7-1-11-12-13-14-15-16-17-18-12-fin
-        Alien alien = new Alien(100, 0); // No en los bordes
+        Alien alien = new Alien(100, Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // No en los bordes
         //alien.setVisible(true);
         aliens.add(alien);
 
