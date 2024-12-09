@@ -295,6 +295,9 @@ public class Board extends JPanel {
      * Si los alienígenas alcanzan el borde inferior del tablero, el juego termina y se nos muestra por pantalla el mensaje "Invasion!"
      * */
     public void update_aliens(){
+        if(direction != 0 || direction != 1 || direction != -1){
+            //TODO
+        }
         for (Alien alien : this.aliens) {
             int x = alien.getX();
             //Se ha cambiado <= por >=

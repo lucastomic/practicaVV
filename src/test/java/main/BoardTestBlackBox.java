@@ -519,6 +519,7 @@ public class BoardTestBlackBox {
     }
 
 
+    //TODO
     // Test SR-11: Dirección fuera de valores esperados, alien fuera del tablero por la izquierda
     @Test
     public void testInvalidDirection_AlienLeftOutOfBounds() {
