@@ -51,7 +51,7 @@ public class BoardTestWhiteBox {
         assertTrue(board.getShot().isVisible(), "El disparo debería seguir visible.");
     }
 
-    // PT-3: Disparo impacta en un alien, alien "muriendo", disparo inactivo, deaths disminuye
+    // PT-3: Disparo impacta en un alien, alien "muriendo", disparo inactivo, deaths aumenta
     @Test
     public void testShotHitsAlien() {
         board.getShot().setX(50);
@@ -66,7 +66,7 @@ public class BoardTestWhiteBox {
 
         assertFalse(board.getShot().isVisible(), "El disparo debería volverse inactivo tras el impacto.");
         assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'.");
-        assertEquals(0, board.getDeaths(), "El contador de muertes debería disminuir.");
+        assertEquals(2, board.getDeaths(), "El contador de muertes debería aumentar.");
     }
 
     // PT-4: Disparo visible, alien visible pero no hay impacto. El disparo esta por debajo

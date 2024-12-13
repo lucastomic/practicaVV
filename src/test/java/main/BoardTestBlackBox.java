@@ -58,24 +58,24 @@ public class BoardTestBlackBox {
         }
     }
 
-    // CE-1: `deaths` igual a `Commons.CHANCE`, el juego debería terminar
+    // CE-1: `deaths` igual a `Commons.NUMBER_OF_ALIENS_TO_DESTROY`, el juego debería terminar
      @Test
     public void testGameWonWhenDeathsEqualsChance() {
-        board.setDeaths(Commons.CHANCE); // Configura deaths igual a CHANCE
+        board.setDeaths(Commons.NUMBER_OF_ALIENS_TO_DESTROY); // Configura deaths igual a NUMBER_OF_ALIENS_TO_DESTROY
 
         board.update();
 
-        assertFalse(board.isInGame(), "El juego debería terminar cuando deaths es igual a Commons.CHANCE.");
+        assertFalse(board.isInGame(), "El juego debería terminar cuando deaths es igual a Commons.NUMBER_OF_ALIENS_TO_DESTROY.");
     }
 
-    // CE-2: `deaths` menor que `Commons.CHANCE`, el juego debería continuar
+    // CE-2: `deaths` menor que `Commons.NUMBER_OF_ALIENS_TO_DESTROY`, el juego debería continuar
     @Test
     public void testGameContinuesWhenDeathsLessThanChance() {
-        board.setDeaths(Commons.CHANCE - 1); // Configura deaths menor que CHANCE
+        board.setDeaths(Commons.NUMBER_OF_ALIENS_TO_DESTROY - 1); // Configura deaths menor que NUMBER_OF_ALIENS_TO_DESTROY
 
         board.update();
 
-        assertTrue(board.isInGame(), "El juego debería continuar cuando deaths es menor que Commons.CHANCE.");
+        assertTrue(board.isInGame(), "El juego debería continuar cuando deaths es menor que Commons.NUMBER_OF_ALIENS_TO_DESTROY.");
     }
 
 
@@ -268,8 +268,7 @@ public class BoardTestBlackBox {
         board.getShot().setY(55);
         Alien alien = new Alien(50, 50);
         aliens.add(alien);
-
-        board.update_shots();
+            board.update_shots();
         assertFalse(board.getShot().isVisible(), "El disparo debería desaparecer tras el impacto");
         assertTrue(alien.isDying(), "El alien debería estar en estado 'muriendo'");
         assertEquals(board.getDeaths(),1, "Las muertes deben aumentar");
