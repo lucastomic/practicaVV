@@ -295,41 +295,42 @@ public class Board extends JPanel {
      * Si los alienígenas alcanzan el borde inferior del tablero, el juego termina y se nos muestra por pantalla el mensaje "Invasion!"
      * */
     public void update_aliens(){
-        if(direction != 0 || direction != 1 || direction != -1){
-            //TODO
+        if(direction != 0 && direction != 1 && direction != -1){
+            message = "Wrong coordinates!";
         }
-        for (Alien alien : this.aliens) {
-            int x = alien.getX();
-            //Se ha cambiado <= por >=
-            if (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
-                //Cambiar la dirección a -1, porque en 0 no se mueven
-                direction = -1;
-                Iterator<Alien> i1 = this.aliens.iterator();
-                while (i1.hasNext()) {
-                    Alien a2 = i1.next();
-                    a2.setY(a2.getY() + Commons.GO_DOWN);
+        else {
+            //Se ha unificado el iterador
+            Iterator<Alien> it = this.aliens.iterator();
+            for (Alien alien : this.aliens) {
+                int x = alien.getX();
+                //Se ha cambiado <= por >=
+                if (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
+                    //Cambiar la dirección a -1, porque en 0 no se mueven
+                    direction = -1;
+                    while (it.hasNext()) {
+                        Alien a2 = it.next();
+                        a2.setY(a2.getY() + Commons.GO_DOWN);
+                    }
+                }
+                if (x <= Commons.BORDER_LEFT && direction != 1) {
+                    direction = 1;
+                    while (it.hasNext()) {
+                        Alien a = it.next();
+                        //Se cambia x en vez de Y, (setX, se cambia a setY)
+                        a.setY(a.getY() + Commons.GO_DOWN);
+                    }
                 }
             }
-            if (x <= Commons.BORDER_LEFT && direction != 1) {
-                direction = 1;
-                Iterator<Alien> i2 = this.aliens.iterator();
-                while (i2.hasNext()) {
-                    Alien a = i2.next();
-                    //Se cambia x en vez de Y, (setX, se cambia a setY)
-                    a.setY(a.getY() + Commons.GO_DOWN);
+            while (it.hasNext()) {
+                Alien alien = it.next();
+                if (alien.isVisible()) {
+                    int y = alien.getY();
+                    if (y > Commons.GROUND - Commons.ALIEN_HEIGHT) {
+                        inGame = false;
+                        message = "Invasion!";
+                    }
+                    alien.act(direction);
                 }
-            }
-        }
-        Iterator<Alien> it = this.aliens.iterator();
-        while (it.hasNext()) {
-            Alien alien = it.next();
-            if (alien.isVisible()) {
-                int y = alien.getY();
-                if (y > Commons.GROUND - Commons.ALIEN_HEIGHT) {
-                    inGame = false;
-                    message = "Invasion!";
-                }
-                alien.act(direction);
             }
         }
     }
