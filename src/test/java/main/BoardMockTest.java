@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class BoardTest {
+public class BoardMockTest {
     @Test
     void testUpdateAliensIntegration() {
         // Preparar mocks
@@ -17,17 +17,14 @@ public class BoardTest {
         Alien mockAlien1 = mock(Alien.class);
         Alien mockAlien2 = mock(Alien.class);
 
-        /*
-        // Configurar bomb para evitar NullPointerException
+
+        // Configurar bomb para evitar NullPointerException ya que bomb es una clase dentro de Alien
         Alien.Bomb mockBomb1 = mock(Alien.Bomb.class);
         Alien.Bomb mockBomb2 = mock(Alien.Bomb.class);
         when(mockAlien1.getBomb()).thenReturn(mockBomb1);
         when(mockAlien2.getBomb()).thenReturn(mockBomb2);
         when(mockBomb1.isDestroyed()).thenReturn(false);
         when(mockBomb2.isDestroyed()).thenReturn(false);
-
-         */
-
 
 
         // Configurar posiciones iniciales
