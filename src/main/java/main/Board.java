@@ -271,7 +271,7 @@ public class Board extends JPanel {
 
                         var ii = new ImageIcon(explImg);
                         alien.setImage(ii.getImage());
-                        alien.setDying(true);
+                        alien.die();
                         deaths++;
                         this.shot.die();
                     }
