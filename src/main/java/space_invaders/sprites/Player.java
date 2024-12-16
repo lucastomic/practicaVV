@@ -27,7 +27,7 @@ public class Player extends Sprite {
         int START_X = Commons.BOARD_WIDTH / 2 - Commons.PLAYER_WIDTH;
         setX(START_X);
 
-        int START_Y = 280;
+        int START_Y = Commons.GROUND - Commons.PLAYER_HEIGHT;
         setY(START_Y);
     }
 

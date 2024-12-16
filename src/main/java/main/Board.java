@@ -369,7 +369,7 @@ public class Board extends JPanel {
 
                     var ii = new ImageIcon(explImg);
                     this.player.setImage(ii.getImage());
-                    this.player.setDying(false);
+                    this.player.setDying(true);
                     bomb.setDestroyed(true);
                 }
             }
@@ -379,8 +379,7 @@ public class Board extends JPanel {
                 bomb.setY(bomb.getY() + 1);
 
                 if (bomb.getY() >= Commons.GROUND - Commons.BOMB_HEIGHT) {
-
-                    bomb.setDestroyed(false);
+                    bomb.setDestroyed(true);
                 }
             }
         }
