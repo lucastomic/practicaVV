@@ -39,7 +39,7 @@ public class Player extends Sprite {
 
         x += dx;
 
-        if (x >= 2) {
+        if (x <= 2) {
 
             x = 2;
         }
@@ -62,7 +62,7 @@ public class Player extends Sprite {
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = 2;
+            dx = -2;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
