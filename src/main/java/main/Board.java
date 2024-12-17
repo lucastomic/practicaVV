@@ -296,6 +296,9 @@ public class Board extends JPanel {
      * Si los alienígenas alcanzan el borde inferior del tablero, el juego termina y se nos muestra por pantalla el mensaje "Invasion!"
      * */
     public void update_aliens(){
+        /*
+        Se ha añadido estructura de control de coordenadas permitidas
+         */
         if(direction != 0 && direction != 1 && direction != -1){
             message = "Wrong coordinates!";
         }

@@ -26,7 +26,7 @@ class PlayerTest {
         assertNotNull(player.getImage(), "La imagen del jugador no se ha cargado.");
 
         // Verificar que las coordenadas x y y sean las esperadas
-        assertEquals(270, player.getX(), "La posición X del jugador no es correcta.");
+        assertEquals(Commons.BOARD_WIDTH / 2 - Commons.PLAYER_WIDTH, player.getX(), "La posición X del jugador no es correcta.");
         assertEquals(280, player.getY(), "La posición Y del jugador no es correcta.");
     }
 
@@ -114,7 +114,7 @@ class PlayerTest {
 
         // Presionar tecla izquierda
         player.keyPressed(leftKeyPress);
-        assertEquals(2, player.dx, "dx debe ser 2 al presionar la tecla izquierda.");
+        assertEquals(-2, player.dx, "dx debe ser 2 al presionar la tecla izquierda.");
 
         // Soltar tecla izquierda
         player.keyReleased(leftKeyRelease);
@@ -144,7 +144,7 @@ class PlayerTest {
 
         // Presionar tecla izquierda
         player.keyPressed(leftKeyPress);
-        assertEquals(2, player.dx, "dx debe ser 2 al presionar la tecla izquierda.");
+        assertEquals(-2, player.dx, "dx debe ser 2 al presionar la tecla izquierda.");
 
         // Soltar tecla izquierda
         player.keyReleased(leftKeyPress);

@@ -60,8 +60,12 @@ public class Alien extends Sprite {
      * @param direction posición hacia la izquierda o derecha hacia la que se mueve el alien
      * */
     public void act(int direction) {
-
+        if( (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) || (x <= Commons.BORDER_LEFT && direction != 1) ){
+        }
+        else
+        {
         this.x += direction;
+        }
     }
 
     /**

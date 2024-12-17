@@ -246,21 +246,21 @@ class AlienTest {
         // Prueba 8 (WORST CASE): Posición X justo por debajo del limite superior. Dirección en el limite superior (+1)
         @Test
         void worstCaseTestActWithXNearMaxToRight() {
-            int currentX = Commons.BOARD_WIDTH - 1;
+            int currentX = Commons.BOARD_WIDTH - Commons.BORDER_RIGHT  - 1;
             alien.setX(currentX);
-            alien.act(+1);
+            alien.act(1);
 
-            assertEquals(Commons.BOARD_WIDTH, alien.getX(), "La posición X debería ser " + (Commons.BOARD_WIDTH));
+            assertEquals(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT , alien.getX(), "La posición X debería ser " + (Commons.BOARD_WIDTH - Commons.BORDER_RIGHT ));
         }
 
         // Prueba 9 (WORST CASE): Posición X justo por encima del limite inferior. Dirección en el limite inferior (-1)
         @Test
         void worstCaseTestActWithXNearMinToLeft() {
-            int currentX = 1;
+            int currentX = Commons.BORDER_LEFT + 1;
             alien.setX(currentX);
             alien.act(-1);
 
-            assertEquals(0, alien.getX(), "La posición X debería ser " + (0));
+            assertEquals(Commons.BORDER_LEFT, alien.getX(), "La posición X debería ser " + (0));
         }
 
         // Prueba 10 (WORST CASE): Posición X en el limite superior. Dirección en el limite superior (+1)
@@ -268,7 +268,7 @@ class AlienTest {
         void worstCaseTestActWithXAtMaxToRight() {
             int currentX = Commons.BOARD_WIDTH;
             alien.setX(currentX);
-            alien.act(+1);
+            alien.act(1);
 
             assertEquals(Commons.BOARD_WIDTH, alien.getX(), "La posición X debería ser " + (Commons.BOARD_WIDTH));
         }
