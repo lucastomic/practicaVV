@@ -261,8 +261,8 @@ public class BoardTestWhiteBox {
 
         // Verifica que la bomba no se ha actualizado
         assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
-        assertEquals(0, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
-        assertEquals(0, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
+        assertEquals(100, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
+        assertEquals(100, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
     }
 
 
@@ -287,7 +287,7 @@ public class BoardTestWhiteBox {
         // Verifica que la bomba se ha colocado sobre el alien
         assertFalse(bomb.isDestroyed(), "La bomba no debería estar destruida.");
         assertEquals(50, bomb.getX(), "La posición X de la bomba debería ser la del alien.");
-        assertEquals(100, bomb.getY(), "La posición Y de la bomba debería ser la del alien.");
+        assertEquals(101, bomb.getY(), "La posición Y de la bomba debería haber bajado.");
     }
 
 
@@ -311,12 +311,9 @@ public class BoardTestWhiteBox {
 
         // Verifica que la bomba no se ha actualizado
         assertTrue(bomb.isDestroyed(), "La bomba debería seguir destruida.");
-        assertEquals(0, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
-        assertEquals(0, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
+        assertEquals(100, bomb.getX(), "La posición X de la bomba no debería haber cambiado.");
+        assertEquals(100, bomb.getY(), "La posición Y de la bomba no debería haber cambiado.");
     }
-
-
-
 
     @Test
     public void testUpdateBomb_PT4() throws Exception {

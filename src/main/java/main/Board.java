@@ -322,11 +322,12 @@ public class Board extends JPanel {
                     }
                 }
             }
+            it = this.aliens.iterator();
             while (it.hasNext()) {
                 Alien alien = it.next();
                 if (alien.isVisible()) {
                     int y = alien.getY();
-                    if (y > Commons.GROUND - Commons.ALIEN_HEIGHT) {
+                    if (y >= Commons.GROUND - Commons.ALIEN_HEIGHT) {
                         inGame = false;
                         message = "Invasion!";
                     }

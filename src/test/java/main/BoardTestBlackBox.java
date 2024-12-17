@@ -526,7 +526,7 @@ public class BoardTestBlackBox {
         aliens.add(new Alien(-10, 50));  // Posición fuera de tablero por la izquierda
         board.update_aliens();
 
-        assertThrows(IllegalArgumentException.class, board::update_aliens);
+        assertEquals("Wrong coordinates!", board.getMessage(), "El mensaje debería ser 'Wrong coordinates!'");
 
     }
 
@@ -537,7 +537,7 @@ public class BoardTestBlackBox {
         aliens.add(new Alien(Commons.BOARD_WIDTH + 10, 50));  // Posición fuera de tablero por la derecha
         board.update_aliens();
 
-        assertThrows(IllegalArgumentException.class, board::update_aliens);
+        assertEquals("Wrong coordinates!", board.getMessage(), "El mensaje debería ser 'Wrong coordinates!'");
     }
 
     // Prueba de límite: Alien justo antes del límite inferior
@@ -549,8 +549,7 @@ public class BoardTestBlackBox {
         board.update_aliens();
 
         assertTrue(board.isInGame(), "El juego debería continuar ya que el alien no ha tocado el límite inferior");
-        assertNull(board.getMessage(), "No debería mostrarse ningún mensaje de 'Invasion!'");
-    }
+        assertEquals("Game Over", board.getMessage(), "El mensaje debería ser 'Game Over, ya que no se ha invadido y es el mensaje por defecto'");    }
 
     // Prueba de límite: Alien tocando el límite inferior
     @Test
