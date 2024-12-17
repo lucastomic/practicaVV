@@ -56,26 +56,32 @@ public class Board extends JPanel {
      * */
     public Board() {
         generator = new Random();
-        initBoard();
+        initBoard(true);
     }
 
+    /**
+     * Inicializa el tablero y comienza la partida dependiendo del parametro withTimer
+     * @param withTimer boolean que solo es true en caso de que se quiera iniciar el timer automáticamente
+     */
+    public Board(boolean withTimer) {
+        generator = new Random();
+        initBoard(withTimer);
+    }
     /**
      * Inicializa un nuevo tablero con las dimensiones predefinidas, le asigna un fondo de color negro, inicializa el contador de juego e inicia la partida.
      * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
-    private void initBoard() {
-
+    private void initBoard(boolean withTimer) {
         addKeyListener(new TAdapter());
         setFocusable(true);
         d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
         setBackground(Color.black);
-
-        timer = new Timer(Commons.DELAY, new GameCycle());
-        timer.start();
-
+        if(withTimer) {
+            timer = new Timer(Commons.DELAY, new GameCycle());
+            timer.start();
+        }
         gameInit();
     }
-
     /**
      * Incializa la partida.
      * Crea las filas de alienígenas, creando tantos alienígenas como indica la constante Commons.NUMBER_OF_ALIENS_TO_DESTROY.
