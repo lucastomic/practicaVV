@@ -57,7 +57,6 @@ public class Board extends JPanel {
     public Board() {
         generator = new Random();
         initBoard();
-        gameInit();
     }
 
     /**
