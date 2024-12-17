@@ -56,23 +56,42 @@ public class Board extends JPanel {
      * */
     public Board() {
         generator = new Random();
-        initBoard();
+        initBoard(true);
         gameInit();
     }
 
     /**
+     * Inicializa el tablero y comienza la partida dependiendo del parametro withTimer
+     * @param withTimer boolean que solo es true en caso de que se quiera iniciar el timer automáticamente
+     */
+    public Board(boolean withTimer) {
+        generator = new Random();
+        initBoard(withTimer);
+        gameInit();
+    }
+    /**
      * Inicializa un nuevo tablero con las dimensiones predefinidas, le asigna un fondo de color negro, inicializa el contador de juego e inicia la partida.
      * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
-    private void initBoard() {
+    private void initBoard(boolean withTimer) {
+        addKeyListener(new TAdapter());
+        setFocusable(true);
+        d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
+        setBackground(Color.black);
+        if(withTimer) {
+            timer = new Timer(Commons.DELAY, new GameCycle());
+            timer.start();
+        }
+        gameInit();
+    }
+
+
+    private void initBoardWithoutTimer() {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
         d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
         setBackground(Color.black);
-
-        timer = new Timer(Commons.DELAY, new GameCycle());
-        timer.start();
 
         gameInit();
     }
@@ -334,6 +353,7 @@ public class Board extends JPanel {
                         inGame = false;
                         message = "Invasion!";
                     }
+                    System.out.println(direction);
                     alien.act(direction);
                 }
             }
