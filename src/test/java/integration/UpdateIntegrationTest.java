@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import space_invaders.sprites.Alien;
 import space_invaders.sprites.Player;
-import space_invaders.sprites.Shot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import javax.swing.Timer;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class BoardIntegrationTest {
+public class UpdateIntegrationTest {
     @Test
     public void testUpdateWithAllMocks() {
         Board board = Mockito.spy(new Board(false));
