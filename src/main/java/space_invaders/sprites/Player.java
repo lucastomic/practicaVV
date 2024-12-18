@@ -23,7 +23,7 @@ public class Player extends Sprite {
 
         width = ii.getImage().getWidth(null);
         setImage(ii.getImage());
-
+        //Se ha cambiado la posicion x del jugador para que este en el medio
         int START_X = Commons.BOARD_WIDTH / 2 - Commons.PLAYER_WIDTH;
         setX(START_X);
 
@@ -38,7 +38,7 @@ public class Player extends Sprite {
     public void act() {
 
         x += dx;
-
+        //Se ha puesto <= en vez de >=
         if (x <= 2) {
 
             x = 2;
@@ -60,13 +60,14 @@ public class Player extends Sprite {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT) {
 
+        if (key == KeyEvent.VK_LEFT) {
+        //Se ha invertido el signo
             dx = -2;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-
+        //Se ha invertido el signo
             dx = 2;
         }
     }
