@@ -99,6 +99,7 @@ public class Board extends JPanel {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
+                //Reemplzamos Commons.ALIEN_INIT_Y por Commons.ALIEN_INIT_X en el primer parámetro del constructor
                 var alien = new Alien(Commons.ALIEN_INIT_X + 18 * j,
                         Commons.ALIEN_INIT_Y + 18 * i);
                 this.aliens.add(alien);
@@ -280,6 +281,7 @@ public class Board extends JPanel {
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
                         alien.die();
+                        //Hacemos que las muertes aumenten en lugar de decrecer
                         deaths++;
                         this.shot.die();
                     }
