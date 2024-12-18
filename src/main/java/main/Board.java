@@ -82,7 +82,7 @@ public class Board extends JPanel {
             timer = new Timer(Commons.DELAY, new GameCycle());
             timer.start();
         }
-
+        //Se ha eliminado la invocación del metodo gameInit() en esta línea por redundancia
     }
     /**
      * Incializa la partida.
