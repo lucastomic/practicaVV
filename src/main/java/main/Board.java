@@ -67,6 +67,7 @@ public class Board extends JPanel {
     public Board(boolean withTimer) {
         generator = new Random();
         initBoard(withTimer);
+        gameInit();
     }
     /**
      * Inicializa un nuevo tablero con las dimensiones predefinidas, le asigna un fondo de color negro, inicializa el contador de juego e inicia la partida.
@@ -81,6 +82,7 @@ public class Board extends JPanel {
             timer = new Timer(Commons.DELAY, new GameCycle());
             timer.start();
         }
+
     }
     /**
      * Incializa la partida.
