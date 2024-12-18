@@ -57,6 +57,7 @@ public class Board extends JPanel {
     public Board() {
         generator = new Random();
         initBoard(true);
+        gameInit();
     }
 
     /**
@@ -80,7 +81,6 @@ public class Board extends JPanel {
             timer = new Timer(Commons.DELAY, new GameCycle());
             timer.start();
         }
-        gameInit();
     }
     /**
      * Incializa la partida.

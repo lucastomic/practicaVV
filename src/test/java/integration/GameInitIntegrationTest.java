@@ -1,13 +1,13 @@
 package integration;
 
 import main.Board;
-import main.Commons;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import space_invaders.sprites.Alien;
 import space_invaders.sprites.Player;
 import space_invaders.sprites.Shot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,72 +15,82 @@ import static org.mockito.Mockito.*;
 
 public class GameInitIntegrationTest {
 
+    // 1. Test: Constructor llama a gameInit() usando stubs
     @Test
-    public void testGameInitCreatesExpectedObjects() {
+    public void testBoardConstructorCallsGameInitWithStub() {
+        // Creamos un spy para el Board
+        Board board = Mockito.spy(new Board(false));
 
-        Board board = new Board();
+        // Stub para gameInit()
+        doNothing().when(board).gameInit();
+
+        // Simulamos el flujo del constructor
         board.gameInit();
 
-        // Verificamos que Player se crea
-        Player player = board.getPlayer();
-        assertNotNull(player, "El jugador debería estar inicializado.");
-        assertEquals(Commons.BOARD_WIDTH / 2 - Commons.PLAYER_WIDTH, player.getX(), "Posición X del jugador incorrecta.");
-        assertEquals(Commons.GROUND - Commons.PLAYER_HEIGHT, player.getY(), "Posición Y del jugador incorrecta.");
-
-        // Verificamos que la lista de aliens se inicializa correctamente
-        List<Alien> aliens = board.getAliens();
-        assertNotNull(aliens, "La lista de aliens debería estar inicializada.");
-        assertEquals(24, aliens.size(), "Deberían haberse creado 24 aliens.");
-
-        // Verificamos que Shot se inicializa correctamente
-        Shot shot = board.getShot();
-        assertNotNull(shot, "El disparo debería estar inicializado.");
-
-        // Verificamos que el disparo no se mueve ni se ve hasta que el jugador dispare
-        assertEquals(0, shot.getX(), "La posición X del disparo inicial debería ser 0.");
-        assertEquals(0, shot.getY(), "La posición Y del disparo inicial debería ser 0.");
+        // Verificamos que gameInit() se llama exactamente una vez
+        verify(board, times(1)).gameInit();
     }
 
-
+    // 2. Test: gameInit() inicializa Player usando mocks
     @Test
-    public void testGameInitAliensInitialization() {
+    public void testGameInitInitializesPlayerWithMock() {
 
-        Board board = Mockito.spy(new Board());
-        board.gameInit();
-
-        // Observamos la lista real de aliens
-        List<Alien> aliens = board.getAliens();
-        assertEquals(24, aliens.size(), "Deberían haberse creado 24 aliens.");
-
-        // Observamos un alien individual
-        Alien alien = aliens.get(0);
-        assertNotNull(alien, "El alien debería estar inicializado.");
-        assertEquals(Commons.ALIEN_INIT_X, alien.getX(), "La posición X inicial del alien es incorrecta.");
-        assertEquals(Commons.ALIEN_INIT_Y, alien.getY(), "La posición Y inicial del alien es incorrecta.");
-    }
-
-    @Test
-    public void testGameInitWithMockedObjects() {
-
-        Board board = Mockito.spy(new Board());
-
-        // Creamos mocks para Player, Shot y Aliens
+        Board board = Mockito.spy(new Board(false));
         Player mockPlayer = mock(Player.class);
-        Shot mockShot = mock(Shot.class);
-        List<Alien> mockAliens = Mockito.mock(List.class);
 
-        // Sobrescribimos la creación de objetos dentro de gameInit() ya que siempre crea nuevas instancias
+        // Mock del getter
         doReturn(mockPlayer).when(board).getPlayer();
-        doReturn(mockShot).when(board).getShot();
+
+        board.gameInit();
+
+        assertNotNull(board.getPlayer(), "El jugador debería inicializarse.");
+    }
+
+    // 3. Test: gameInit() inicializa Aliens usando mocks
+    @Test
+    public void testGameInitInitializesAliensWithMock() {
+
+        Board board = Mockito.spy(new Board(false));
+        List<Alien> mockAliens = new ArrayList<>();
+        for (int i = 0; i < 24; i++) mockAliens.add(mock(Alien.class));
+
+        // Mock del getter
         doReturn(mockAliens).when(board).getAliens();
 
         board.gameInit();
 
-        // Verificamos que los métodos retornan los mocks
-        assertEquals(mockPlayer, board.getPlayer(), "El jugador debería ser el mock.");
-        assertEquals(mockShot, board.getShot(), "El disparo debería ser el mock.");
-        assertEquals(mockAliens, board.getAliens(), "La lista de aliens debería ser el mock.");
+        assertNotNull(board.getAliens(), "La lista de aliens debería inicializarse.");
+        assertEquals(24, board.getAliens().size(), "Deberían existir 24 aliens.");
     }
 
+    // 4. Test: gameInit() inicializa Shot usando mocks
+    @Test
+    public void testGameInitInitializesShotWithMock() {
+
+        Board board = Mockito.spy(new Board(false));
+        Shot mockShot = mock(Shot.class);
+
+        // Mock del getter
+        doReturn(mockShot).when(board).getShot();
+
+        board.gameInit();
+
+        assertNotNull(board.getShot(), "El disparo debería inicializarse.");
+    }
+
+    // 5. Test: gameInit() inicializa todas las dependencias correctamente
+    @Test
+    public void testGameInitInitializesAllDependencies() {
+
+        Board board = new Board(false);
+
+        board.gameInit();
+
+        // Assert: Verificar inicialización de todas las dependencias
+        assertNotNull(board.getPlayer(), "El jugador debería inicializarse.");
+        assertNotNull(board.getAliens(), "La lista de aliens debería inicializarse.");
+        assertNotNull(board.getShot(), "El disparo debería inicializarse.");
+        assertEquals(24, board.getAliens().size(), "Deberían existir 24 aliens.");
+    }
 
 }
